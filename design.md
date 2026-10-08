@@ -1,4 +1,4 @@
-# 10: — Design (Angular/NestJS)
+# 10: — Design (Angular/Fastify)
 
 ## Prisma Schema (demo)
 ```prisma
@@ -84,6 +84,7 @@ async load() {
 | Decision | Rationale |
 |---|---|
 | **tRPC over REST/GraphQL** | Zero runtime overhead; types are shared directly between server and client (no codegen needed beyond Prisma); the strongest "full-stack type safety" signal. |
+| **Fastify over NestJS** | tRPC ships a first-class Fastify adapter; NestJS would require a community adapter and adds module/DI ceremony that dilutes the type-safety signal. |
 | **Prisma over raw SQL** | Migration tooling + auto-generated types; the de facto standard for type-safe DB access in the TypeScript ecosystem. |
 | **Angular services + signals** | Native client state with no additional data-fetching abstraction. |
 | **Tailwind components** | Keeps UI polish lightweight so focus stays on type safety, not CSS. |
@@ -91,6 +92,7 @@ async load() {
 
 ## Trade-offs Considered
 - **tRPC vs. with GraphQL + Codegen**: tRPC is simpler for a TypeScript-only full stack; GraphQL + codegen (e.g., `graphql-codegen`) adds flexibility for heterogeneous clients but adds build complexity. Chose tRPC for the strongest "types everywhere" signal with minimal config.
+- **Fastify vs. NestJS**: NestJS needs a community adapter to host tRPC and layers module/DI ceremony on top; Fastify hosts the tRPC router natively with minimal ceremony. Chose Fastify to keep the demo focused on the type-safety signal.
 - **Prisma vs. Drizzle ORM**: Prisma is more established + has better migration UI; Drizzle is lighter + TS-first but younger. Chose Prisma for the demo's "out-of-the-box" experience.
 - **Full auth system vs. hardcoded user ID**: Full auth adds infra; for the type-safety demo, a hardcoded `authorId: "user-123"` (or a simple `mockUser` context) showcases the type flow without auth complexity.
 

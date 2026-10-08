@@ -1,4 +1,4 @@
-# 10: Type-Safe Full-Stack Platform — Proposal (Angular/NestJS Edition)
+# 10: Type-Safe Full-Stack Platform — Proposal (Angular/Fastify Edition)
 
 ## Problem
 End-to-end type safety across the full stack (frontend, API, database) is a rare and highly valued signal. Recruiters see candidates who can enforce schemas at every layer, catch mismatches at compile-time, and reduce runtime bugs. Building a type-safe full-stack template demonstrates this depth.
@@ -11,7 +11,7 @@ A recruiter asks "How do you prevent API-parsing errors?" → the candidate show
 
 ## Tech Stack (high-level)
 - **Framework**: Angular 20 (standalone) + TypeScript
-- **Backend**: NestJS
+- **Backend**: Fastify 5 — thin HTTP host for the tRPC router (no framework ceremony)
 - **Routing/Types**: tRPC (server-side routers + client auto-types); or alternatively, with GraphQL Codegen + Prisma
 - **ORM**: Prisma (migrations, type-safe queries)
 - **Client Data**: Angular services + signals
@@ -19,7 +19,7 @@ A recruiter asks "How do you prevent API-parsing errors?" → the candidate show
 - **Deployment**: Vercel; GitHub Actions type-check + lint step
 
 ## Timeline
-- Week 1: Prisma schema (User, Post, Comment); Angular 20 standalone app + NestJS API setup; tRPC initialization with appRouter; define `appRouter` + types; basic `hello` procedure.
+- Week 1: Prisma schema (User, Post, Comment); Angular 20 standalone app + Fastify API setup; tRPC initialization with appRouter; define `appRouter` + types; basic `hello` procedure.
 - Week 2: Prisma migrations run; create demo pages: list posts, create post (type-safe from form to DB); add an Angular data service with signals; style buttons/forms with Tailwind.
 - Week 3: End-to-end type test: change Prisma schema field name → run `prisma generate` → TypeScript errors in frontend show the mismatch; add a `typescript-check` npm script; document the workflow.
 - Week 4: Polish: error boundaries, default empty states; README with "type-safety demo" walkthrough; deploy; sample recruiter script.
