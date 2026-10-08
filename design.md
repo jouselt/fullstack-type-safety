@@ -2,13 +2,14 @@
 
 ## Prisma Schema (demo)
 ```prisma
+// Prisma 7: the connection URL lives in prisma.config.ts, not in the datasource block
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma/client"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -73,7 +74,7 @@ async load() {
 
 ## Type-Safety Verification Workflow
 1. Define or change Prisma schema (`prisma/schema.prisma`)
-2. Run `prisma generate` → updates `node_modules/.prisma/client/generated/client.ts`
+2. Run `prisma generate` → updates `apps/api/src/generated/prisma/client` (Prisma 7 generates outside node_modules; the import is `./generated/prisma/client/client.js`)
 3. Run `npm run typecheck` (which is `tsc --noEmit`) → TypeScript checks:
    - All tRPC input/output zod schemas are satisfied
    - All procedure calls in components have matching types

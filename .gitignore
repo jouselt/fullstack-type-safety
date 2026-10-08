@@ -10,3 +10,6 @@ dist/
 
 # Environment
 .env
+
+# Generated Prisma client (produced by `prisma generate`)
+apps/api/src/generated/
