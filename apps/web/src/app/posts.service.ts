@@ -3,8 +3,8 @@ import { trpc } from './trpc/trpc-client';
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import type { AppRouter } from '@api/trpc/app.router';
 
-type Post = inferRouterOutputs<AppRouter>['getPosts'][number];
-type CreatePostInput = inferRouterInputs<AppRouter>['createPost'];
+export type Post = inferRouterOutputs<AppRouter>['getPosts'][number];
+export type CreatePostInput = inferRouterInputs<AppRouter>['createPost'];
 
 @Injectable({ providedIn: 'root' })
 export class PostsService {
