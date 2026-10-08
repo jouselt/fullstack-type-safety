@@ -1,2 +1,12 @@
 # Local Pi runtime state
 .atl/
+odd/
+
+# Dependencies
+node_modules/
+
+# Builds
+dist/
+
+# Environment
+.env
