@@ -3,7 +3,7 @@ import type { AppRouter } from '@api/trpc/app.router';
 
 /**
  * Base URL for the tRPC API.
- * Must match the API's PORT (local .env uses 3005; fresh clones default to 3000 — README will document).
+ * Must match the API's PORT in apps/api/.env (default .env.example ships 3005).
  */
 export const API_URL = 'http://localhost:3005';
 
