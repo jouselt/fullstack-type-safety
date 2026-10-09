@@ -13,3 +13,5 @@ dist/
 
 # Generated Prisma client (produced by `prisma generate`)
 apps/api/src/generated/
+.neon
+.env.local
