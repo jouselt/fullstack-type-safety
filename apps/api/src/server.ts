@@ -6,11 +6,13 @@ import { createContext } from './trpc/context.js';
 
 const app = Fastify({ logger: true });
 
-// Register CORS
-await app.register(cors, { origin: true });
+// Register CORS and tRPC without top-level await: serverless bundlers
+// (Vercel) expect a synchronous module surface, and Fastify queues
+// app.listen() behind plugin registration via its ready() lifecycle.
+app.register(cors, { origin: true });
 
 // Register tRPC plugin
-await app.register(fastifyTRPCPlugin, {
+app.register(fastifyTRPCPlugin, {
   trpcOptions: {
     router: appRouter,
     createContext,
