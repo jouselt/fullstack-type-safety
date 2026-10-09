@@ -129,6 +129,8 @@ Input validation (Zod) and persistence types (Prisma) meet at the router boundar
 
 This is a template, not a product: a mock author (`user-123`), no auth, one relation. The interesting part is the type plumbing — everything else stays as small as possible so the pattern stays readable.
 
+**Roadmap**: a hosted deployment (Vercel serverless for the API, static web, Neon Postgres) is intentionally out of the current scope; the local Docker workflow plus CI is the supported path.
+
 ## CI
 
 Every push and pull request runs the same gate you run locally: install, generate, typecheck ([ci.yml](.github/workflows/ci.yml)).
