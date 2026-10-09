@@ -129,8 +129,54 @@ Input validation (Zod) and persistence types (Prisma) meet at the router boundar
 
 This is a template, not a product: a mock author (`user-123`), no auth, one relation. The interesting part is the type plumbing — everything else stays as small as possible so the pattern stays readable.
 
-**Roadmap**: a hosted deployment (Vercel serverless for the API, static web, Neon Postgres) is intentionally out of the current scope; the local Docker workflow plus CI is the supported path.
+**Roadmap**: auth (a mock author is wired in — `user-123`), more relations. The hosted deployment is no longer roadmap — see [Deploy to Vercel](#deploy-to-vercel).
 
 ## CI
 
 Every push and pull request runs the same gate you run locally: install, generate, typecheck ([ci.yml](.github/workflows/ci.yml)).
+
+## Deploy to Vercel
+
+The template deploys as two Vercel projects — the API as a single serverless function, the web app as static output — with a hosted Postgres ([Neon](https://neon.tech)). Vercel's native Fastify support requires zero config: it detects `apps/api/src/server.ts`, routes every request to the function, and lets Fastify's router match the path — so the root-mounted tRPC routes (`/health`, `/getPosts`, ...) work in production exactly as they do locally. Prisma runs through the `pg` driver adapter, so no query-engine binary ships with the function.
+
+### 1. Create the Neon database
+
+Create a project at [neon.tech](https://neon.tech) (free tier works). Copy **both** connection strings:
+
+- **Pooled** (host ends in `-pooler`) — used by the running app and by `prisma generate`.
+- **Direct** (port 5432, no pooler) — used only by the migration CLI.
+
+### 2. Migrate and seed (from this machine)
+
+Run `prisma migrate deploy` against the **direct** URL — on NixOS, still through the alpine container from [Troubleshooting](#troubleshooting), swapping `DATABASE_URL` for the Neon direct string. Then seed with the **pooled** URL:
+
+```bash
+DATABASE_URL="<neon-pooled-url>" npm run db:seed -w api
+```
+
+### 3. API project on Vercel
+
+Import the repo at [vercel.com/new](https://vercel.com/new) and configure:
+
+- **Root Directory**: `apps/api`
+- **Build Command**: `npx prisma generate` (needs `DATABASE_URL`, see below)
+- **Environment Variable**: `DATABASE_URL` = the Neon **pooled** URL
+
+The framework preset (Fastify) and output need no configuration. After the first deploy, smoke-test the function:
+
+```bash
+curl -s https://<your-api-project>.vercel.app/health
+# {"status":"ok"}
+```
+
+### 4. Point the web app at it
+
+The production API origin is baked at build time into `apps/web/src/environments/environment.production.ts`. Set it to your deployed API URL (if you kept the suggested project name `fullstack-type-safety-api`, it is already correct) and commit the change.
+
+### 5. Web project on Vercel
+
+Import the repo again as a second project:
+
+- **Root Directory**: `apps/web`
+
+Everything else is auto-detected (Angular preset, `ng build`, static output). Open the deployed URL, create a post, and watch it appear — the same loop you tested locally, now on `https://`.
