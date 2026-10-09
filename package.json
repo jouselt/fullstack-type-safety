@@ -1,0 +1,19 @@
+{
+  "name": "fullstack-type-safety",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Type-safe full-stack template: Angular 20 + tRPC + Prisma + Fastify with end-to-end compile-time type safety",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev -w api",
+    "dev:web": "npm start -w web",
+    "build": "npm run build -w api && npm run build -w web",
+    "typecheck": "npm run typecheck -w api && npm run build -w web",
+    "verify:types": "npm run db:generate -w api && npm run typecheck"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

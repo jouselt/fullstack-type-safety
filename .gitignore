@@ -1,2 +1,15 @@
 # Local Pi runtime state
 .atl/
+odd/
+
+# Dependencies
+node_modules/
+
+# Builds
+dist/
+
+# Environment
+.env
+
+# Generated Prisma client (produced by `prisma generate`)
+apps/api/src/generated/
